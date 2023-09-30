@@ -25,10 +25,10 @@ namespace Moving
         public void MoveTo(Vector3 target)
         {
             _navMeshAgent.SetDestination(target);
-            StartCoroutine(CompleteChecker());
+            StartCoroutine(WaitComplete());
         }
 
-        private IEnumerator CompleteChecker()
+        private IEnumerator WaitComplete()
         {
             yield return new WaitWhile(() => Vector3.Distance(_navMeshAgent.destination, transform.position) > 1.0f);
             onComplete?.Invoke(this);

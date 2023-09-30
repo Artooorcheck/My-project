@@ -5,23 +5,34 @@ namespace Moving
 {
     public class MoveController : MonoBehaviour
     {
-        private IEnumerable<IMovable> _movable;
 
         [SerializeField] private Transform[] _points;
 
         private void Awake()
         {
-            _movable = GetComponentsInChildren<IMovable>();
+            Init();
+        }
 
-            foreach (var mov in _movable)
+        private void Init()
+        {
+            var movables = GetComponentsInChildren<IMovable>();
+
+            foreach (var movable in movables)
             {
-                mov.onComplete += (mov) =>
-                 {
-                     mov.MoveTo(_points[Random.Range(0, _points.Length)].position);
-                 };
-
-                mov.MoveTo(_points[Random.Range(0, _points.Length)].position);
+                movable.onComplete -= SetTarget;
+                movable.onComplete += SetTarget;
+                SetTarget(movable);
             }
+        }
+
+        private void OnTransformChildrenChanged()
+        {
+            Init();
+        }
+
+        private void SetTarget(IMovable movable)
+        {
+            movable.MoveTo(_points[Random.Range(0, _points.Length)].position);
         }
     }
 }

@@ -19,10 +19,10 @@ namespace Moving
                 _moveCoroutine = null;
             }
 
-            _moveCoroutine = StartCoroutine(Move(target));
+            _moveCoroutine = StartCoroutine(MoveAsync(target));
         }
 
-        private IEnumerator Move(Vector3 point)
+        private IEnumerator MoveAsync(Vector3 point)
         {
             var transform = this.transform;
             var startPos = transform.position;
